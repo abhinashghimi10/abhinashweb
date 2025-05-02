@@ -1,25 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Abhi Notes Editor</title>
+  <title>Abhi Docs</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-    }
-    textarea {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      padding: 20px;
-      font-size: 18px;
       font-family: Arial, sans-serif;
-      box-sizing: border-box;
-      resize: none;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #toolbar {
+      background: #f3f3f3;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    #editor {
+      flex: 1;
+      padding: 20px;
+      outline: none;
+      overflow-y: auto;
+    }
+    button {
+      padding: 6px 10px;
     }
   </style>
 </head>
 <body>
-  <textarea placeholder="Start typing your notes here..."></textarea>
+
+<div id="toolbar">
+  <button onclick="execCmd('bold')"><b>B</b></button>
+  <button onclick="execCmd('italic')"><i>I</i></button>
+  <button onclick="execCmd('underline')"><u>U</u></button>
+  <button onclick="execCmd('insertUnorderedList')">• List</button>
+  <button onclick="saveDoc()">💾 Save</button>
+  <button onclick="loadDoc()">📂 Load</button>
+</div>
+
+<div id="editor" contenteditable="true">
+  <p>Start writing here...</p>
+</div>
+
+<script>
+  function execCmd(command) {
+    document.execCommand(command, false, null);
+  }
+
+  function saveDoc() {
+    const content = document.getElementById('editor').innerHTML;
+    localStorage.setItem('abhi_doc', content);
+    alert("Document saved locally!");
+  }
+
+  function loadDoc() {
+    const content = localStorage.getItem('abhi_doc');
+    if (content) {
+      document.getElementById('editor').innerHTML = content;
+    } else {
+      alert("No saved document found.");
+    }
+  }
+
+  // Auto-load on start
+  window.onload = loadDoc;
+</script>
+
 </body>
 </html>
